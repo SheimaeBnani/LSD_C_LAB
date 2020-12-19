@@ -50,3 +50,45 @@ int main()
 
   	return (0);
 }
+/*double Determinant(double C[N][N], int n);
+{
+                double s = 1, det = 0, D[N][N];
+                int i,j,m,k,c;
+                if(n == 1)
+                {
+                        return (C[0][0]);
+                }
+                else
+                {
+               		 det = 0;
+               		 for(c=0;c<n;c++)
+                	{
+                       		 m = 0;
+                       		 k = 0;
+                       		 for(i=0;i<n;i++)
+                        	{
+                                	for(j=0;j<n;j++)
+                                	{	
+                                       		 D[i][j] = 0;
+                                        	if(i!=0 && j!=c)
+                                        	{
+                                               		 D[m][k] = C[i][j];
+                                               		 if(k<n-2)
+                                                       		 k++;
+                                               		 else
+                                               		 {
+                                                       		 k = 0;
+                                                       		 m++;
+                                                	}
+                                        	}
+                               		 }
+                        	}
+			det = det + s * (C[0][c] * determinant(D, n-1);
+			s = -1 * s;
+			}
+		}
+		return (det);
+ }
+
+
+*/
