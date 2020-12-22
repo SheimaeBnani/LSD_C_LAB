@@ -8,8 +8,12 @@ int main()
 	int i, j, k, n;
         printf("Enter the size of the matrix: ");
         scanf("%d", &n);
-        double C[N][N], A[N][N], B[N], X[N], S1, S2;
-        double T[N][N], IN[N][N], IT[N][N], Y[N], ratio, s;
+        double C[N][N], A[N][N], B[N], S1, S2;
+        double T[N][N], s;
+	double *X;
+        X = malloc(sizeof(double) * n);
+        double *Y;
+        Y = malloc(sizeof(double) * n);
         for(i=0;i<n;i++)
         {
                 for(j=0;j<n;j++)
@@ -60,137 +64,30 @@ int main()
 		}
 		printf("\n");
 	}
-	for(i=1;i<=n;i++)
-	{
-		 for(j=1;j<=n;j++)
-	         {
-			 if(i==j)
-		          {
-				   C[i][j+n] = 1;
-			  }
-			 else
-			 {
-				   C[i][j+n] = 0;
-			 }
-		 }
-	 }
-	for(i=1;i<=n;i++)
-	{
-		for(j=0;j<n;j++)
-		{
-			 if(i!=j)
-			 {
-				 ratio = C[j][i]/C[i][i];
-				 for(k=1;k<=2*n;k++)
-				 {
-					  C[j][k] = C[j][k] - ratio*C[i][k];
-				  }
-			 }
-		 }
-	 }
-	for(i=1;i<=n;i++)
-	 {
-		 for(j=n+1;j<=2*n;j++)
-		 {
-			   	IN[i][j] = C[i][j]/C[i][i];
-		 }
-	 }
-	 /* The inverse of C */
-	 printf("\nThe inverse of C is:\n");
-	 for(i=1;i<=n;i++)
-	 {
-		  for(j=n+1;j<=2*n;j++)
-		  {
-			  printf("%lf\t",C[i][j]);
-		  }
-		  printf("\n");
-	 }
-	/*The inverse of T */
-         for(i=0;i<n;i++)
-         {
-                  for(j=0;j<n;j++)
-                  {
-                           if(i==j)
-                           {
-                                T[i][j+n] = 1;
-                           }
-                           else
-                           {
-                                T[i][j+n] = 0;
-                           }
-                  }
-         }
-         for(i=0;i<n;i++)
+	  Y[0] = B[0]/C[0][0];
+        for(i = 1; i < n; i++)
         {
-                  for(j=0;j<n;j++)
-                  {
-                           if(i!=j)
-                           {
-                                    ratio= T[j][i]/T[i][i];
-                                    for(k=0;k<2*n;k++)
-                                    {
-                                        T[j][k] = T[j][k] - ratio*T[i][k];
-                                    }
-                           }
-                  }
-         }
-         for(i=0;i<n;i++)
-        {
-                  for(j=n;j<2*n;j++)
-                  {
-                        IT[i][j] = T[i][j]/T[i][i];
-                  }
-         }
-         printf("\nThe inverse T is:\n");
-         for(i=0;i<n;i++)
-         {
-                  for(j=n;j<2*n;j++)
-                  {
-                        printf("%lf\t",T[i][j]);
-                  }
-                  printf("\n");
-         }
-         /*Resulotion of the system*/
-         printf("Y=I*B:\n");
-         Y[0]=B[0]*IN[0][0];
- 
-         for(i=1;i<n;i++)
-         {
-              s=0;
-              for(j=0;j<i;j++)
-                         s+=C[i][j]*Y[j];
-              Y[i]=(B[i]-s)*IN[i][i];
-         }
-         for(i=0;i<n;i++)
-                  printf("%lf\t", Y[i]);
-         printf("\n");
-         Y[0]=B[0]/C[0][0];
-         for(i=1;i<n;i++)
-         {
                 s=0;
-                for(j=0;j<i;j++)
-                {
-                      s+=C[i][j]*Y[j];
-                }
-                Y[i]=(B[i]-s)/C[i][i];
-         }
-         for(i=0;i<n;i++)
-         {
-               printf("Y[%d]=%lf\t", i, Y[i]);
-         }
-         X[n-1]=Y[n-1]/T[n-1][n-1];
-	for(int i=n-2;i>=0;i--)
-	{
-		s=0;
-		for(j=i;j<n;j++)
-			s=s+T[i][j]*X[j];
-		X[i]=(Y[i]-s)/T[i][i];
-	}
-         for(i=0;i<n;i++)
-         {
-               printf("X[%d]=%lf\t", i, X[i]);
-         }
+                for(j = 0; j < i; j++)
+                        s += C[i][j]* Y[j];
+                Y[i] = (B[i]-s) / C[i][i];
 
-		 return(0);
+        }
+        printf("\nY= ");
+        for (i = 0; i < n; i++)
+                 printf("%lf\n", Y[i]);
+        X[n-1] = Y[n-1] / T[n-1][n-1];
+        for(i = n-2; i >= 0; i--)
+        {
+                s = 0;
+                for(j = i+1; j < n; j++)
+                        s = s + T[i][j] * X[j];
+                X[i] = (Y[i] - s) / T[i][i];
+        }
+        printf("\nX=  ");
+        for (i = 0; i < n; i++)
+                 printf("%lf\n", X[i]);
+
+	return (0);
 }
 
